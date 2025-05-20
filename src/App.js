@@ -54,6 +54,8 @@ import tpm10 from './img/thonephatmyin/tpm10.jpg';
 import tpm11 from './img/thonephatmyin/tpm11.png';
 import tpm12 from './img/thonephatmyin/tpm12.png';
 
+import LinNyiAung from './files/LinNyiAung.pdf';
+
 
 
 
@@ -314,19 +316,19 @@ export default function PortfolioWebsite() {
                 animate={animatedElements.about ? "visible" : "hidden"}
                 className="flex space-x-4"
               >
-                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://github.com/LinNyiAung" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
+                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://github.com/LinNyiAung"  target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
                   <Github className="mr-2" size={20} />
                   <span>GitHub</span>
                 </motion.a>
-                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://www.facebook.com/LinNyiAungisSteve" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
+                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://www.facebook.com/LinNyiAungisSteve"  target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
                   <Facebook className="mr-2" size={20} />
                   <span>Facebook</span>
                 </motion.a>
-                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://www.linkedin.com/in/lin-nyi-aung-a68b85325/" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
+                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://www.linkedin.com/in/lin-nyi-aung-a68b85325/" target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
                   <Linkedin className="mr-2" size={20} />
                   <span>LinkedIn</span>
                 </motion.a>
-                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="#" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
+                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href={LinNyiAung} target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
                   <ExternalLink className="mr-2" size={20} />
                   <span>Resume</span>
                 </motion.a>
