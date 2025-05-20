@@ -614,14 +614,21 @@ function SkillCard({ title, description, icon }) {
 // Enhanced Component for Project Cards with Carousel
 function ProjectCard({ title, description, technologies, images }) {
   const [currentImage, setCurrentImage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const totalImages = images.length;
 
   const nextImage = () => {
+    setIsLoading(true);
     setCurrentImage((prev) => (prev + 1) % totalImages);
   };
 
   const prevImage = () => {
+    setIsLoading(true);
     setCurrentImage((prev) => (prev - 1 + totalImages) % totalImages);
+  };
+
+  const handleImageLoad = () => {
+    setIsLoading(false);
   };
 
   return (
@@ -631,7 +638,14 @@ function ProjectCard({ title, description, technologies, images }) {
       className="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all"
     >
       <div className="relative overflow-hidden">
-        {/* Carousel Images - Adjusted height and object-fit for better screenshot display */}
+        {/* Add loading indicator */}
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
+            <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
+        
+        {/* Optimized image loading */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -643,6 +657,8 @@ function ProjectCard({ title, description, technologies, images }) {
             src={images[currentImage]} 
             alt={`${title} - image ${currentImage + 1}`} 
             className="w-full max-h-96 object-contain py-4"
+            loading="lazy"
+            onLoad={handleImageLoad}
           />
         </motion.div>
         
@@ -668,7 +684,7 @@ function ProjectCard({ title, description, technologies, images }) {
               <ChevronRight size={20} />
             </motion.button>
             
-            {/* Carousel Indicators */}
+            {/* Simplified indicators - show fewer dots for better performance */}
             <div className="absolute bottom-3 left-0 right-0 flex justify-center space-x-2">
               {images.map((_, index) => (
                 <motion.button
