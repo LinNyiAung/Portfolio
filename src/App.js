@@ -403,6 +403,7 @@ export default function PortfolioWebsite() {
               images={[
                 t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18,
               ]}
+              link="https://github.com/LinNyiAung/ToePwar"
             />
             
             <ProjectCard 
@@ -412,6 +413,7 @@ export default function PortfolioWebsite() {
               images={[
                 tkt1, tkt2, tkt3, tkt4, tkt5, tkt6, tkt7, tkt8, tkt9            
               ]}
+              link="https://github.com/LinNyiAung/ThinKayTa"
             />
             
             <ProjectCard 
@@ -424,6 +426,7 @@ export default function PortfolioWebsite() {
                 ms3,
                 ms4
               ]}
+              link="https://github.com/LinNyiAung/MyoSae"
             />
             
             <ProjectCard 
@@ -433,6 +436,7 @@ export default function PortfolioWebsite() {
               images={[
                 tpm1, tpm2, tpm3, tpm4, tpm5, tpm6, tpm7, tpm8, tpm9, tpm10, tpm12,
               ]}
+              
             />
           </motion.div>
         </div>
@@ -614,7 +618,7 @@ function SkillCard({ title, description, icon }) {
 }
 
 // Enhanced Component for Project Cards with Carousel
-function ProjectCard({ title, description, technologies, images }) {
+function ProjectCard({ title, description, technologies, images, link }) {
   const [currentImage, setCurrentImage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const totalImages = images.length;
@@ -720,12 +724,14 @@ function ProjectCard({ title, description, technologies, images }) {
           </div>
         </div>
         <div className="mt-4 flex justify-end">
+          <motion.a href={link} target="_blank">
           <motion.button 
             whileHover={{ x: 3 }}
             className="text-indigo-600 hover:text-indigo-800 flex items-center"
           >
-            View Project <ExternalLink size={16} className="ml-1" />
+            View Project <ExternalLink size={16} className="ml-1"/>
           </motion.button>
+          </motion.a>
         </div>
       </div>
     </motion.div>
