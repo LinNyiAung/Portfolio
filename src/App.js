@@ -335,7 +335,7 @@ export default function PortfolioWebsite() {
                   <Facebook className="mr-2" size={20} />
                   <span>Facebook</span>
                 </motion.a>
-                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://www.linkedin.com/in/lin-nyi-aung-a68b85325/" target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
+                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://www.linkedin.com/in/lin-nyi-aung/" target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
                   <Linkedin className="mr-2" size={20} />
                   <span>LinkedIn</span>
                 </motion.a>
@@ -570,7 +570,7 @@ export default function PortfolioWebsite() {
                 <motion.a 
                   variants={fadeIn} 
                   whileHover={{ y: -5 }} 
-                  href="https://www.linkedin.com/in/lin-nyi-aung-a68b85325/" 
+                  href="https://www.linkedin.com/in/lin-nyi-aung/" 
                   className="bg-white text-indigo-600 p-3 rounded-full hover:bg-gray-100 transition-colors"
                 >
                   <Linkedin size={20} />
