@@ -8,6 +8,16 @@ import fwl from './img/fwl.jpg';
 import samsung from './img/samsung.JPG';
 import asc from './img/asc.jpg';
 
+
+import phms1 from './img/pahtama_salesman/phms1.png'
+import phms2 from './img/pahtama_salesman/phms2.png'
+import phms3 from './img/pahtama_salesman/phms3.png'
+import phms4 from './img/pahtama_salesman/phms4.png'
+import phms5 from './img/pahtama_salesman/phms5.png'
+import phms6 from './img/pahtama_salesman/phms6.png'
+import phms7 from './img/pahtama_salesman/phms7.png'
+import phms8 from './img/pahtama_salesman/phms8.png'
+
 import t1 from './img/toepwar/t1.jpg';
 import t2 from './img/toepwar/t2.jpg';
 import t3 from './img/toepwar/t3.jpg';
@@ -402,6 +412,15 @@ export default function PortfolioWebsite() {
             animate={animatedElements.projects ? "visible" : "hidden"}
             className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10"
           >
+            <ProjectCard 
+              title="Salesman - Pahtama Group"
+              description="A salesman management system that helps sales teams navigate routes, view shop details, and analyze sales data with location-based features. The app uses route-based authentication and provides comprehensive analytics for better sales performance tracking."
+              technologies={['Flutter', 'Python', 'Uvicorn', 'FastAPI', 'MongoDB']}
+              images={[
+                phms1, phms2, phms3, phms4, phms5, phms6, phms7, phms8,
+              ]}
+              link="#"
+            />
             <ProjectCard 
               title="Toe Pwar"
               description="A mobile application that uses machine learning to provide personalized financial advice and budget tracking. Features include expense categorization, saving goals, and investment recommendations."
