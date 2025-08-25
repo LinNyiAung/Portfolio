@@ -354,7 +354,7 @@ export default function PortfolioWebsite() {
             variants={staggerContainer}
             initial="hidden"
             animate={animatedElements.skills ? "visible" : "hidden"}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8"
           >
             <SkillCard 
               title="Website Development" 
@@ -370,6 +370,11 @@ export default function PortfolioWebsite() {
               title="AR/VR Development" 
               description="Developing immersive augmented and virtual reality experiences for various platforms."
               icon={<VrIcon />}
+            />
+            <SkillCard
+              title="AI & Machine Learning"
+              description="Developing intelligent systems and leveraging machine learning models for data analysis, pattern recognition, and automation."
+              icon={<AiIcon />}
             />
             <SkillCard 
               title="IoT" 
@@ -803,6 +808,22 @@ function IoTIcon() {
     <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+      </svg>
+    </div>
+  );
+}
+
+
+function AiIcon() {
+  return (
+    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <rect x="6" y="6" width="12" height="10" rx="2" strokeWidth={2} />
+        <circle cx="9" cy="9" r="1" fill="currentColor" />
+        <circle cx="15" cy="9" r="1" fill="currentColor" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 12h4" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 10H4M20 10h-2" />
       </svg>
     </div>
   );
