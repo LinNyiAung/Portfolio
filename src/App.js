@@ -487,7 +487,7 @@ export default function PortfolioWebsite() {
             <AchievementCard 
               title="Bronze Medalist - Asian Science Camp 2025"
               date="August 2025"
-              description="I was awarded the Bronze Medal at the Asian Science Camp 2025 Poster Presentation under the Sustainability theme for my project EcoBoat. The project focused on an AI-powered, solar-driven solution to clean marine pollution and promote sustainable water ecosystems."
+              description="Was awarded the Bronze Medal at the Asian Science Camp 2025 Poster Presentation under the Sustainability theme for the project EcoBoat. The project focused on an AI-powered, solar-driven solution to clean marine pollution and promote sustainable water ecosystems."
               imageUrl={asc}
             />
             <AchievementCard 
