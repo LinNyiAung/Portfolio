@@ -415,7 +415,7 @@ export default function PortfolioWebsite() {
             <ProjectCard 
               title="Salesman - Pahtama Group"
               description="A salesman management system that helps sales teams navigate routes, view shop details, and analyze sales data with location-based features. The app uses route-based authentication and provides comprehensive analytics for better sales performance tracking."
-              technologies={['Flutter', 'Python', 'Uvicorn', 'FastAPI', 'MongoDB']}
+              technologies={['Flutter', 'Python', 'Uvicorn', 'FastAPI', 'SQLite']}
               images={[
                 phms1, phms2, phms3, phms4, phms5, phms6, phms7, phms8,
               ]}
