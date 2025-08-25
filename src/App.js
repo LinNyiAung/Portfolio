@@ -247,7 +247,7 @@ export default function PortfolioWebsite() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-4xl md:text-6xl font-bold mb-6"
           >
-            Hello, I'm <span className="text-yellow-300">Lin Nyi Aung</span>
+            Hello, I'm <span className="text-yellow-300">Lin Nyi Aung / Steve</span>
           </motion.h1>
           <motion.p 
             initial={{ y: 50, opacity: 0 }}
