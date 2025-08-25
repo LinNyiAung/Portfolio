@@ -6,6 +6,7 @@ import inno2025 from './img/inno2025.jpg';
 import inno2024 from './img/inno2024.jpg';
 import fwl from './img/fwl.jpg';
 import samsung from './img/samsung.JPG';
+import asc from './img/asc.jpg';
 
 import t1 from './img/toepwar/t1.jpg';
 import t2 from './img/toepwar/t2.jpg';
@@ -459,6 +460,12 @@ export default function PortfolioWebsite() {
             animate={animatedElements.achievements ? "visible" : "hidden"}
             className="max-w-4xl mx-auto"
           >
+            <AchievementCard 
+              title="Bronze Medalist - Asian Science Camp 2025"
+              date="August 2025"
+              description="I was awarded the Bronze Medal at the Asian Science Camp 2025 Poster Presentation under the Sustainability theme for my project EcoBoat. The project focused on an AI-powered, solar-driven solution to clean marine pollution and promote sustainable water ecosystems."
+              imageUrl={asc}
+            />
             <AchievementCard 
               title="First Runner-up - GUSTO Innovation Awards and Forum 2024"
               date="March 2025"
