@@ -9,6 +9,11 @@ import samsung from './img/samsung.JPG';
 import asc from './img/asc.jpg';
 
 
+import ecm1 from './img/earthquakemap/ecm1.jpeg'
+import ecm2 from './img/earthquakemap/ecm2.jpeg'
+import ecm3 from './img/earthquakemap/ecm3.jpeg'
+
+
 import phms1 from './img/pahtama_salesman/phms1.png'
 import phms2 from './img/pahtama_salesman/phms2.png'
 import phms3 from './img/pahtama_salesman/phms3.png'
@@ -422,6 +427,15 @@ export default function PortfolioWebsite() {
               link="#"
             />
             <ProjectCard 
+              title="Myanmar Earthquake Map"
+              description="A map for reporting damages during 2025 earthquake in Myanmar. The aim is to connect damaged areas and people with volunteers and aid suppliers."
+              technologies={['React', 'Node.js', 'Express.js', 'MongoDB']}
+              images={[
+                ecm1, ecm2, ecm3, 
+              ]}
+              link="https://github.com/LinNyiAung/MyanmarEarthquake"
+            />
+            <ProjectCard 
               title="Toe Pwar"
               description="A mobile application that uses machine learning to provide personalized financial advice and budget tracking. Features include expense categorization, saving goals, and investment recommendations."
               technologies={['Flutter', 'Python', 'Uvicorn', 'FastAPI', 'MongoDB']}
@@ -688,12 +702,12 @@ function ProjectCard({ title, description, technologies, images, link }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-gray-800 flex items-center justify-center"
+          className="bg-gray-800 flex items-center justify-center h-96"
         >
           <img 
             src={images[currentImage]} 
             alt={`${title} - image ${currentImage + 1}`} 
-            className="w-full max-h-96 object-contain py-4"
+            className="w-full max-h-full object-contain py-4"
             loading="lazy"
             onLoad={handleImageLoad}
           />
