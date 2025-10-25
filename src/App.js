@@ -321,7 +321,7 @@ export default function PortfolioWebsite() {
               className="md:w-2/3 md:pl-12"
             >
               <p className="text-lg text-gray-600 mb-6">
-                I'm a passionate Full Stack Developer with expertise in building responsive web applications, mobile apps, and cutting-edge AR/VR experiences. With several experience in the tech industry, I specialize in creating intuitive and engaging digital solutions that solve real-world problems.
+                I'm a passionate Full Stack Developer with expertise in building responsive web applications, mobile apps, cutting-edge AR/VR experiences and AI driven systems. With several experience in the tech industry, I specialize in creating intuitive and engaging digital solutions that solve real-world problems.
               </p>
               <p className="text-lg text-gray-600 mb-8">
                 My approach combines technical excellence with creative problem-solving, ensuring that every project I work on is both functional and user-friendly. I'm constantly learning new technologies and methodologies to stay at the forefront of digital innovation.
