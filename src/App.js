@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Github, Facebook, Linkedin, Mail, Phone, MapPin, ExternalLink, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// --- Imports remain unchanged ---
 import lna from './img/lna.jpg';
 import inno2025 from './img/inno2025.jpg';
 import inno2024 from './img/inno2024.jpg';
@@ -8,11 +10,9 @@ import fwl from './img/fwl.jpg';
 import samsung from './img/samsung.JPG';
 import asc from './img/asc.jpg';
 
-
 import ecm1 from './img/earthquakemap/ecm1.jpeg'
 import ecm2 from './img/earthquakemap/ecm2.jpeg'
 import ecm3 from './img/earthquakemap/ecm3.jpeg'
-
 
 import phms1 from './img/pahtama_salesman/phms1.png'
 import phms2 from './img/pahtama_salesman/phms2.png'
@@ -71,17 +71,15 @@ import tpm11 from './img/thonephatmyin/tpm11.png';
 import tpm12 from './img/thonephatmyin/tpm12.png';
 
 import LinNyiAung from './files/LinNyiAung.pdf';
+// --- End of Imports ---
 
-
-
-
-// Animation variants
+// Refined Animation variants
 const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.6 }
+    transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }
   }
 };
 
@@ -90,17 +88,17 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2
+      staggerChildren: 0.15
     }
   }
 };
 
 const slideIn = {
-  hidden: { x: -60, opacity: 0 },
+  hidden: { x: -40, opacity: 0 },
   visible: { 
     x: 0, 
     opacity: 1,
-    transition: { type: "spring", stiffness: 100, damping: 10 }
+    transition: { type: "spring", stiffness: 80, damping: 15 }
   }
 };
 
@@ -120,7 +118,7 @@ function useScrollAnimation() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.15 } // Slightly higher threshold for better trigger timing
     );
     
     const sections = document.querySelectorAll('.scroll-animate');
@@ -142,11 +140,14 @@ function useScrollAnimation() {
 export default function PortfolioWebsite() {
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const animatedElements = useScrollAnimation();
 
   const handleScroll = () => {
     const sections = ['home', 'about', 'skills', 'projects', 'achievements', 'contact'];
     const scrollPosition = window.scrollY + 100;
+    
+    setScrolled(window.scrollY > 20);
 
     for (const section of sections) {
       const element = document.getElementById(section);
@@ -181,25 +182,33 @@ export default function PortfolioWebsite() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      {/* Navigation */}
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
+      {/* Navigation - Enhanced with Glassmorphism */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ type: "spring", stiffness: 100 }}
-        className="fixed w-full bg-white shadow-md z-10"
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        className={`fixed w-full z-50 transition-all duration-300 ${
+          scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'
+        }`}
       >
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="text-2xl font-bold text-indigo-600">Lin Nyi Aung</div>
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          <div className={`text-2xl font-extrabold tracking-tight ${scrolled ? 'text-indigo-600' : 'text-white'}`}>
+            LNA<span className="text-yellow-400">.</span>
+          </div>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex space-x-8">
             {['Home', 'About', 'Skills', 'Projects', 'Achievements', 'Contact'].map((item) => (
               <motion.button 
                 key={item}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ y: -2 }}
                 onClick={() => scrollToSection(item.toLowerCase())}
-                className={`${activeSection === item.toLowerCase() ? 'text-indigo-600 font-medium' : 'text-gray-600'} hover:text-indigo-500 transition-colors`}
+                className={`text-sm font-medium transition-colors ${
+                  activeSection === item.toLowerCase() 
+                    ? (scrolled ? 'text-indigo-600' : 'text-yellow-300') 
+                    : (scrolled ? 'text-slate-600 hover:text-indigo-600' : 'text-slate-200 hover:text-white')
+                }`}
               >
                 {item}
               </motion.button>
@@ -208,599 +217,632 @@ export default function PortfolioWebsite() {
           
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-gray-600">
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className={scrolled ? 'text-slate-800' : 'text-white'}>
+              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
         
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white py-4 shadow-lg"
-          >
-            <div className="flex flex-col space-y-4 px-4">
-              {['Home', 'About', 'Skills', 'Projects', 'Achievements', 'Contact'].map((item) => (
-                <motion.button 
-                  key={item}
-                  whileHover={{ x: 5 }}
-                  onClick={() => scrollToSection(item.toLowerCase())}
-                  className={`${activeSection === item.toLowerCase() ? 'text-indigo-600 font-medium' : 'text-gray-600'} hover:text-indigo-500 transition-colors text-left`}
-                >
-                  {item}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-white/95 backdrop-blur-xl shadow-xl absolute w-full left-0 top-full overflow-hidden"
+            >
+              <div className="flex flex-col px-6 py-6 space-y-5">
+                {['Home', 'About', 'Skills', 'Projects', 'Achievements', 'Contact'].map((item) => (
+                  <button 
+                    key={item}
+                    onClick={() => scrollToSection(item.toLowerCase())}
+                    className={`text-lg font-medium text-left transition-colors ${
+                      activeSection === item.toLowerCase() ? 'text-indigo-600' : 'text-slate-600 hover:text-indigo-500'
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.nav>
 
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white pt-16">
+      {/* Hero Section - Upgraded Gradient and Spacing */}
+      <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-900 text-white">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-20">
+          <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+          <div className="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
+        </div>
+
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="container mx-auto px-4 py-16 text-center"
+          className="container mx-auto px-6 py-20 text-center relative z-10"
         >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.7 }}
+            className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium"
+          >
+            Available for new opportunities
+          </motion.div>
           <motion.h1 
-            initial={{ y: -50, opacity: 0 }}
+            initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-4xl md:text-6xl font-bold mb-6"
+            className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-tight"
           >
-            Hello, I'm <span className="text-yellow-300">Lin Nyi Aung / Steve</span>
+            Hello, I'm <br className="md:hidden" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">
+              Lin Nyi Aung
+            </span>
           </motion.h1>
           <motion.p 
-            initial={{ y: 50, opacity: 0 }}
+            initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="text-xl md:text-2xl mb-8"
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="text-xl md:text-2xl text-indigo-100 mb-10 max-w-2xl mx-auto font-light"
           >
-            Full Stack Developer & Tech Enthusiast
+            Full Stack Developer & Tech Enthusiast building seamless digital experiences.
           </motion.p>
           <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className="flex justify-center space-x-4"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6"
           >
             <motion.button 
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
               whileTap={{ scale: 0.95 }}
               onClick={() => scrollToSection('contact')}
-              className="bg-white text-indigo-600 px-6 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors"
+              className="w-full sm:w-auto bg-white text-indigo-700 px-8 py-4 rounded-full font-semibold hover:bg-slate-50 transition-all shadow-lg"
             >
-              Contact Me
+              Get in Touch
             </motion.button>
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => scrollToSection('projects')}
-              className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-indigo-600 transition-colors"
+              className="w-full sm:w-auto bg-transparent border-2 border-white/70 text-white px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all backdrop-blur-sm"
             >
-              View Projects
+              View My Work
             </motion.button>
           </motion.div>
         </motion.div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-16 bg-white scroll-animate">
-        <div className="container mx-auto px-4">
-          <motion.h2 
+      {/* About Section - Modernized Shape and Typography */}
+      <section id="about" className="py-24 bg-white scroll-animate">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <motion.div 
             variants={fadeIn}
             initial="hidden"
             animate={animatedElements.about ? "visible" : "hidden"}
-            className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+            className="text-center mb-16"
           >
-            About Me
-          </motion.h2>
-          <div className="flex flex-col md:flex-row items-center">
+            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">About Me</h2>
+            <div className="w-20 h-1.5 bg-indigo-500 mx-auto rounded-full"></div>
+          </motion.div>
+          
+          <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
             <motion.div 
               variants={slideIn}
               initial="hidden"
               animate={animatedElements.about ? "visible" : "hidden"}
-              className="md:w-1/3 mb-8 md:mb-0 flex justify-center"
+              className="w-full md:w-2/5 flex justify-center"
             >
-              <div className="rounded-full overflow-hidden w-64 h-64 border-4 border-indigo-500">
-                <img 
-                  src={lna} 
-                  alt="Profile" 
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-indigo-600 rounded-2xl transform rotate-3 scale-105 opacity-20 group-hover:rotate-6 transition-transform duration-500"></div>
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl z-10 aspect-[4/5] w-72 md:w-full max-w-sm">
+                  <img 
+                    src={lna} 
+                    alt="Lin Nyi Aung" 
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
               </div>
             </motion.div>
+            
             <motion.div 
               variants={fadeIn}
               initial="hidden"
               animate={animatedElements.about ? "visible" : "hidden"}
-              className="md:w-2/3 md:pl-12"
+              className="w-full md:w-3/5"
             >
-              <p className="text-lg text-gray-600 mb-6">
-                I'm a passionate Full Stack Developer with expertise in building responsive web applications, mobile apps, cutting-edge AR/VR experiences and AI driven systems. With several experience in the tech industry, I specialize in creating intuitive and engaging digital solutions that solve real-world problems.
-              </p>
-              <p className="text-lg text-gray-600 mb-8">
-                My approach combines technical excellence with creative problem-solving, ensuring that every project I work on is both functional and user-friendly. I'm constantly learning new technologies and methodologies to stay at the forefront of digital innovation.
-              </p>
+              <h3 className="text-2xl font-bold text-slate-800 mb-6">I design & build digital products</h3>
+              <div className="space-y-6 text-lg text-slate-600 leading-relaxed">
+                <p>
+                  I'm a passionate Full Stack Developer with expertise in building responsive web applications, mobile apps, and cutting-edge AR/VR experiences. With several years of experience in the tech industry, I specialize in creating intuitive and engaging digital solutions that solve real-world problems.
+                </p>
+                <p>
+                  My approach combines technical excellence with creative problem-solving, ensuring that every project I work on is both functional and user-friendly. I'm constantly learning new technologies and methodologies to stay at the forefront of digital innovation.
+                </p>
+              </div>
+              
               <motion.div 
                 variants={staggerContainer}
                 initial="hidden"
                 animate={animatedElements.about ? "visible" : "hidden"}
-                className="flex space-x-4"
+                className="flex flex-wrap gap-4 mt-10"
               >
-                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://github.com/LinNyiAung"  target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
-                  <Github className="mr-2" size={20} />
-                  <span>GitHub</span>
-                </motion.a>
-                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://www.facebook.com/LinNyiAungisSteve"  target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
-                  <Facebook className="mr-2" size={20} />
-                  <span>Facebook</span>
-                </motion.a>
-                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href="https://www.linkedin.com/in/lin-nyi-aung/" target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
-                  <Linkedin className="mr-2" size={20} />
-                  <span>LinkedIn</span>
-                </motion.a>
-                <motion.a variants={fadeIn} whileHover={{ y: -5 }} href={LinNyiAung} target="_blank" className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
-                  <ExternalLink className="mr-2" size={20} />
-                  <span>Resume</span>
-                </motion.a>
+                <SocialButton href="https://github.com/LinNyiAung" icon={<Github size={20} />} label="GitHub" />
+                <SocialButton href="https://www.linkedin.com/in/lin-nyi-aung/" icon={<Linkedin size={20} />} label="LinkedIn" />
+                <SocialButton href="https://www.facebook.com/LinNyiAungisSteve" icon={<Facebook size={20} />} label="Facebook" />
+                <SocialButton href={LinNyiAung} icon={<ExternalLink size={20} />} label="Resume" primary />
               </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="py-16 bg-gray-50 scroll-animate">
-        <div className="container mx-auto px-4">
-          <motion.h2 
+      {/* Skills Section - Polished Cards */}
+      <section id="skills" className="py-24 bg-slate-50 scroll-animate">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <motion.div 
             variants={fadeIn}
             initial="hidden"
             animate={animatedElements.skills ? "visible" : "hidden"}
-            className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+            className="text-center mb-16"
           >
-            My Skills
-          </motion.h2>
+            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Core Skills</h2>
+            <div className="w-20 h-1.5 bg-indigo-500 mx-auto rounded-full"></div>
+          </motion.div>
+
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
             animate={animatedElements.skills ? "visible" : "hidden"}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
           >
             <SkillCard 
-              title="Website Development" 
+              title="Web Dev" 
               description="Creating responsive and dynamic websites using modern frameworks and best practices."
               icon={<WebIcon />}
             />
             <SkillCard 
-              title="Application Development" 
-              description="Building cross-platform mobile and desktop applications with seamless user experiences."
+              title="App Dev" 
+              description="Building cross-platform mobile and desktop applications with seamless UX."
               icon={<AppIcon />}
             />
             <SkillCard 
-              title="AR/VR Development" 
-              description="Developing immersive augmented and virtual reality experiences for various platforms."
+              title="AR/VR Dev" 
+              description="Developing immersive augmented and virtual reality experiences."
               icon={<VrIcon />}
             />
             <SkillCard
-              title="AI & Machine Learning"
-              description="Developing intelligent systems and leveraging machine learning models for data analysis, pattern recognition, and automation."
+              title="AI & ML"
+              description="Developing intelligent systems and leveraging models for data analysis."
               icon={<AiIcon />}
             />
             <SkillCard 
               title="IoT" 
-              description="Connecting devices and creating smart solutions for the Internet of Things ecosystem."
+              description="Connecting devices and creating smart solutions for the IoT ecosystem."
               icon={<IoTIcon />}
             />
           </motion.div>
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-16 bg-white scroll-animate">
-        <div className="container mx-auto px-4">
-          <motion.h2 
+      {/* Projects Section - Aspect Ratio & Overlay fixes */}
+      <section id="projects" className="py-24 bg-white scroll-animate">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <motion.div 
             variants={fadeIn}
             initial="hidden"
             animate={animatedElements.projects ? "visible" : "hidden"}
-            className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+            className="text-center mb-16"
           >
-            Previous Projects
-          </motion.h2>
+            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Featured Projects</h2>
+            <div className="w-20 h-1.5 bg-indigo-500 mx-auto rounded-full"></div>
+          </motion.div>
+
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
             animate={animatedElements.projects ? "visible" : "hidden"}
-            className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10"
           >
+            {/* Same content, just fed into the upgraded ProjectCard */}
+            <ProjectCard 
+              title="Salesman - Pahtama Group"
+              description="A salesman management system that helps teams navigate routes, view shop details, and analyze data. Features route-based authentication and comprehensive analytics."
+              technologies={['Flutter', 'Python', 'FastAPI', 'SQLite']}
+              images={[phms1, phms2, phms3, phms4, phms5, phms6, phms7, phms8]}
+              link="#"
+            />
             <ProjectCard 
               title="Myanmar Earthquake Map"
-              description="A map for reporting damages during 2025 earthquake in Myanmar. The aim is to connect damaged areas and people with volunteers and aid suppliers."
-              technologies={['React', 'Node.js', 'Express.js', 'MongoDB']}
-              images={[
-                ecm1, ecm2, ecm3, 
-              ]}
+              description="A map for reporting damages during the 2025 earthquake in Myanmar. Connects damaged areas with volunteers and aid suppliers."
+              technologies={['React', 'Node.js', 'Express', 'MongoDB']}
+              images={[ecm1, ecm2, ecm3]}
               link="https://github.com/LinNyiAung/MyanmarEarthquake"
             />
             <ProjectCard 
               title="Toe Pwar"
-              description="A mobile application that uses machine learning to provide personalized financial advice and budget tracking. Features include expense categorization, saving goals, and investment recommendations."
-              technologies={['Flutter', 'Python', 'Uvicorn', 'FastAPI', 'MongoDB']}
-              images={[
-                t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18,
-              ]}
+              description="A mobile application that uses machine learning to provide personalized financial advice and budget tracking."
+              technologies={['Flutter', 'Python', 'FastAPI', 'MongoDB']}
+              images={[t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18]}
               link="https://github.com/LinNyiAung/ToePwar"
             />
-            
             <ProjectCard 
               title="Thin Kay Ta"
-              description="A mobile application that uses machine learning to interpret sign language to text and voice. Features include sign language libraries and real-time sign language interpretation with camera."
+              description="An ML-powered mobile app interpreting sign language to text and voice, featuring real-time interpretation via camera."
               technologies={['Flutter', 'TensorFlow', 'Python']}
-              images={[
-                tkt1, tkt2, tkt3, tkt4, tkt5, tkt6, tkt7, tkt8, tkt9            
-              ]}
+              images={[tkt1, tkt2, tkt3, tkt4, tkt5, tkt6, tkt7, tkt8, tkt9]}
               link="https://github.com/LinNyiAung/ThinKayTa"
             />
-            
             <ProjectCard 
               title="Myo Sae"
-              description="An platform that connects entrepreneurs and business owners with potential inverstors. Use crowd funding model to help both individuals and investment firms to invest flexibily."
-              technologies={['React', 'Node.js', 'Express.js', 'Firebase', 'MongoDB']}
-              images={[
-                ms1, 
-                ms2, 
-                ms3,
-                ms4
-              ]}
+              description="A platform connecting entrepreneurs with potential investors using a crowdfunding model for flexible investments."
+              technologies={['React', 'Node.js', 'Firebase', 'MongoDB']}
+              images={[ms1, ms2, ms3, ms4]}
               link="https://github.com/LinNyiAung/MyoSae"
             />
-            
             <ProjectCard 
               title="Thone Phat Myin"
-              description="An augmented reality platform for interactive learning experiences. Students can visualize complex concepts through 3D models and interactive simulations."
+              description="An augmented reality platform for interactive learning. Visualizes complex concepts through 3D models."
               technologies={['Unity', 'C#', 'MySQL', 'ARCore']}
-              images={[
-                tpm1, tpm2, tpm3, tpm4, tpm5, tpm6, tpm7, tpm8, tpm9, tpm10, tpm12,
-              ]}
-              
+              images={[tpm1, tpm2, tpm3, tpm4, tpm5, tpm6, tpm7, tpm8, tpm9, tpm10, tpm11, tpm12]}
             />
           </motion.div>
         </div>
       </section>
 
-      {/* Achievements Section */}
-      <section id="achievements" className="py-16 bg-gray-50 scroll-animate">
-        <div className="container mx-auto px-4">
-          <motion.h2 
+      {/* Achievements Section - Sleek Layout */}
+      <section id="achievements" className="py-24 bg-slate-50 scroll-animate">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <motion.div 
             variants={fadeIn}
             initial="hidden"
             animate={animatedElements.achievements ? "visible" : "hidden"}
-            className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+            className="text-center mb-16"
           >
-            Achievements
-          </motion.h2>
+            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Achievements</h2>
+            <div className="w-20 h-1.5 bg-indigo-500 mx-auto rounded-full"></div>
+          </motion.div>
+
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
             animate={animatedElements.achievements ? "visible" : "hidden"}
-            className="max-w-4xl mx-auto"
+            className="space-y-8"
           >
             <AchievementCard 
               title="Bronze Medalist - Asian Science Camp 2025"
               date="August 2025"
-              description="Was awarded the Bronze Medal at the Asian Science Camp 2025 Poster Presentation under the Sustainability theme for the project EcoBoat. The project focused on an AI-powered, solar-driven solution to clean marine pollution and promote sustainable water ecosystems."
+              description="Awarded Bronze at the Asian Science Camp 2025 Poster Presentation under the Sustainability theme for 'EcoBoat'—an AI-powered, solar-driven marine pollution solution."
               imageUrl={asc}
             />
             <AchievementCard 
-              title="First Runner-up - GUSTO Innovation Awards and Forum 2024"
+              title="First Runner-up - GUSTO Innovation Awards"
               date="March 2025"
-              description="Won second prize in the GUSTO Innovation Awards and Forum for developing an AI-powered Financial Management Application. The solution was praised for its innovative approach and practical application."
+              description="Won second prize for developing an AI-powered Financial Management Application, praised for its innovative approach."
               imageUrl={inno2025}
             />
             <AchievementCard 
-              title="Finalist in Falling Walls Lab Myanmar 2024"
+              title="Finalist - Falling Walls Lab Myanmar 2024"
               date="September 2024"
-              description="Participated as a Finalist in the world class pitch competition, Falling Walls Lab Myanmar with a platform that solves the investment issues in the country."
+              description="Participated as a Finalist with a platform solving local investment issues."
               imageUrl={fwl}
             />
             <AchievementCard 
-              title="Participated in Samsung Ai Hackathon"
+              title="Samsung Ai Hackathon"
               date="September 2024"
-              description="Attended in Samsung's Innovation Bootcamp and participated in Samsung's Ai Hackathon with a sign lanaguage interpreter application that solves the communication problem bettwen people."
+              description="Participated in Samsung's Innovation Bootcamp and AI Hackathon with a sign language interpreter app."
               imageUrl={samsung}
             />
             <AchievementCard 
-              title="Second Runner-up - GUSTO Innovation Awards and Forum 2023"
+              title="Second Runner-up - GUSTO Innovation Awards"
               date="December 2023"
-              description="Won third prize in the GUSTO Innovation Awards and Forum for developing an Augmented Reality based educational application. The solution was praised for its innovative approach and practical application."
+              description="Won third prize for developing an Augmented Reality-based educational application."
               imageUrl={inno2024}
             />           
           </motion.div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-16 bg-indigo-600 text-white scroll-animate">
-        <div className="container mx-auto px-4">
-          <motion.h2 
+      {/* Contact Section - Modern Forms */}
+      <section id="contact" className="py-24 bg-slate-900 text-white scroll-animate relative overflow-hidden">
+        {/* Subtle background element */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-screen filter blur-3xl opacity-20"></div>
+        
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
+          <motion.div 
             variants={fadeIn}
             initial="hidden"
             animate={animatedElements.contact ? "visible" : "hidden"}
-            className="text-3xl md:text-4xl font-bold text-center mb-12"
+            className="text-center mb-16"
           >
-            Contact Me
-          </motion.h2>
+            <h2 className="text-4xl font-extrabold text-white tracking-tight mb-4">Let's Connect</h2>
+            <div className="w-20 h-1.5 bg-indigo-500 mx-auto rounded-full"></div>
+            <p className="mt-6 text-slate-400 max-w-lg mx-auto">Have a project in mind or just want to chat? I'd love to hear from you.</p>
+          </motion.div>
+
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
             animate={animatedElements.contact ? "visible" : "hidden"}
-            className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-slate-800/50 p-8 md:p-12 rounded-3xl border border-slate-700/50 backdrop-blur-sm"
           >
-            <motion.div variants={fadeIn}>
-              <h3 className="text-xl font-semibold mb-6">Get In Touch</h3>
-              <div className="space-y-4">
-                <motion.div whileHover={{ x: 5 }} className="flex items-center">
-                  <Mail size={20} className="mr-3" />
-                  <span>linnyiaung1794@gmail.com</span>
-                </motion.div>
-                <motion.div whileHover={{ x: 5 }} className="flex items-center">
-                  <MapPin size={20} className="mr-3" />
-                  <span>Yangon, Myanmar</span>
-                </motion.div>
-              </div>
-              <motion.div 
-                variants={staggerContainer}
-                className="mt-8 flex space-x-4"
-              >
-                <motion.a 
-                  variants={fadeIn} 
-                  whileHover={{ y: -5 }} 
-                  href="https://github.com/LinNyiAung" 
-                  className="bg-white text-indigo-600 p-3 rounded-full hover:bg-gray-100 transition-colors"
-                >
-                  <Github size={20} />
-                </motion.a>
-                <motion.a 
-                  variants={fadeIn} 
-                  whileHover={{ y: -5 }} 
-                  href="https://www.facebook.com/LinNyiAungisSteve" 
-                  className="bg-white text-indigo-600 p-3 rounded-full hover:bg-gray-100 transition-colors"
-                >
-                  <Facebook size={20} />
-                </motion.a>
-                <motion.a 
-                  variants={fadeIn} 
-                  whileHover={{ y: -5 }} 
-                  href="https://www.linkedin.com/in/lin-nyi-aung/" 
-                  className="bg-white text-indigo-600 p-3 rounded-full hover:bg-gray-100 transition-colors"
-                >
-                  <Linkedin size={20} />
-                </motion.a>
-              </motion.div>
-            </motion.div>
-            <motion.div variants={fadeIn}>
-              <h3 className="text-xl font-semibold mb-6">Send Me a Message</h3>
-              <div className="space-y-4">
-                <motion.div whileHover={{ scale: 1.02 }}>
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    className="w-full p-3 rounded text-gray-800"
-                  />
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.02 }}>
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    className="w-full p-3 rounded text-gray-800"
-                  />
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.02 }}>
-                  <textarea
-                    placeholder="Your Message"
-                    rows="4"
-                    className="w-full p-3 rounded text-gray-800"
-                  ></textarea>
-                </motion.div>
-                <div>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => alert('Message sent! Thank you for contacting me.')}
-                    className="bg-white text-indigo-600 px-6 py-3 rounded font-medium hover:bg-gray-100 transition-colors"
-                  >
-                    Send Message
-                  </motion.button>
+            <motion.div variants={fadeIn} className="flex flex-col justify-between">
+              <div>
+                <h3 className="text-2xl font-bold mb-8 text-white">Contact Information</h3>
+                <div className="space-y-6">
+                  <div className="flex items-start group">
+                    <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-lg mr-4 group-hover:bg-indigo-500 group-hover:text-white transition-colors">
+                      <Mail size={24} />
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-400 font-medium mb-1">Email</p>
+                      <a href="mailto:thelinnyiaung@gmail.com" className="text-lg hover:text-indigo-400 transition-colors">thelinnyiaung@gmail.com</a>
+                    </div>
+                  </div>
+                  <div className="flex items-start group">
+                    <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-lg mr-4 group-hover:bg-indigo-500 group-hover:text-white transition-colors">
+                      <MapPin size={24} />
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-400 font-medium mb-1">Location</p>
+                      <p className="text-lg">Yangon, Myanmar</p>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </motion.div>
+            
+            <motion.div variants={fadeIn}>
+              <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); alert('Message sent! Thank you.'); }}>
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-400 mb-2">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    required
+                    className="w-full p-4 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
+                    placeholder="John Doe"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-400 mb-2">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    required
+                    className="w-full p-4 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
+                    placeholder="john@example.com"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-slate-400 mb-2">Message</label>
+                  <textarea
+                    id="message"
+                    required
+                    rows="4"
+                    className="w-full p-4 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none resize-none"
+                    placeholder="Tell me about your project..."
+                  ></textarea>
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="w-full bg-indigo-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-600/20"
+                >
+                  Send Message
+                </motion.button>
+              </form>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8">
+      <footer className="bg-slate-950 text-slate-400 py-8 border-t border-slate-800">
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="container mx-auto px-4 text-center"
+          className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center"
         >
-          <p>© {new Date().getFullYear()} Lin Nyi Aung. All Rights Reserved.</p>
-          <p className="mt-2 text-sm text-gray-400">Designed & Developed with ❤️</p>
+          <div className="text-xl font-bold text-white mb-4 md:mb-0">
+            LNA<span className="text-indigo-500">.</span>
+          </div>
+          <p className="text-sm">© {new Date().getFullYear()} Lin Nyi Aung. All Rights Reserved.</p>
         </motion.div>
       </footer>
     </div>
   );
 }
 
-// Component for Skill Cards
+// Helper component for Social Buttons
+function SocialButton({ href, icon, label, primary }) {
+  return (
+    <motion.a 
+      whileHover={{ y: -3 }}
+      href={href} 
+      target="_blank" 
+      rel="noreferrer"
+      className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+        primary 
+          ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-500/20' 
+          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-indigo-600'
+      }`}
+    >
+      <span className="mr-2">{icon}</span>
+      <span>{label}</span>
+    </motion.a>
+  );
+}
+
+// Enhanced Skill Card
 function SkillCard({ title, description, icon }) {
   return (
     <motion.div 
       variants={fadeIn}
-      whileHover={{ y: -10, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
-      className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+      className="group bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all duration-300 relative overflow-hidden"
     >
-      <div className="text-indigo-500 mb-4">{icon}</div>
-      <h3 className="text-xl font-semibold mb-3 text-gray-800">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+      {/* Decorative gradient blob that appears on hover */}
+      <div className="absolute -right-10 -top-10 w-32 h-32 bg-indigo-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      
+      <div className="relative z-10">
+        <div className="mb-6 transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 origin-left">
+          {icon}
+        </div>
+        <h3 className="text-xl font-bold mb-3 text-slate-800 group-hover:text-indigo-600 transition-colors">{title}</h3>
+        <p className="text-slate-600 text-sm leading-relaxed">{description}</p>
+      </div>
     </motion.div>
   );
 }
 
-// Enhanced Component for Project Cards with Carousel
+// Massively Improved Project Card
 function ProjectCard({ title, description, technologies, images, link }) {
   const [currentImage, setCurrentImage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const totalImages = images.length;
+  const totalImages = images && images.length > 0 ? images.length : 0;
 
-  const nextImage = () => {
+  const nextImage = (e) => {
+    e.preventDefault();
     setIsLoading(true);
     setCurrentImage((prev) => (prev + 1) % totalImages);
   };
 
-  const prevImage = () => {
+  const prevImage = (e) => {
+    e.preventDefault();
     setIsLoading(true);
     setCurrentImage((prev) => (prev - 1 + totalImages) % totalImages);
   };
 
-  const handleImageLoad = () => {
-    setIsLoading(false);
-  };
-
   return (
     <motion.div 
       variants={fadeIn}
-      whileHover={{ y: -5 }}
-      className="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all"
+      className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 flex flex-col h-full group"
     >
-      <div className="relative overflow-hidden">
-        {/* Add loading indicator */}
+      <div className="relative overflow-hidden aspect-video bg-slate-900 flex items-center justify-center">
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
-            <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-900 z-10">
+            <div className="w-8 h-8 border-3 border-slate-700 border-t-indigo-500 rounded-full animate-spin"></div>
           </div>
         )}
         
-        {/* Optimized image loading */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="bg-gray-800 flex items-center justify-center h-96"
-        >
-          <img 
+        {totalImages > 0 && (
+          <motion.img 
+            key={currentImage} // forces re-render for animation
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
             src={images[currentImage]} 
-            alt={`${title} - image ${currentImage + 1}`} 
-            className="w-full max-h-full object-contain py-4"
-            loading="lazy"
-            onLoad={handleImageLoad}
+            alt={`${title} screenshot`} 
+            className="w-full h-full object-contain"
+            onLoad={() => setIsLoading(false)}
           />
-        </motion.div>
+        )}
         
-        {/* Carousel Navigation */}
+        {/* Sleek Carousel Controls */}
         {totalImages > 1 && (
-          <>
-            <motion.button 
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between px-3">
+            <button 
               onClick={prevImage}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 p-2 rounded-full text-white hover:bg-opacity-70 transition-all"
-              aria-label="Previous image"
+              className="p-2 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-white/40 transition-colors"
             >
               <ChevronLeft size={20} />
-            </motion.button>
-            <motion.button 
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+            </button>
+            <button 
               onClick={nextImage}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 p-2 rounded-full text-white hover:bg-opacity-70 transition-all"
-              aria-label="Next image"
+              className="p-2 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-white/40 transition-colors"
             >
               <ChevronRight size={20} />
-            </motion.button>
-            
-            {/* Simplified indicators - show fewer dots for better performance */}
-            <div className="absolute bottom-3 left-0 right-0 flex justify-center space-x-2">
-              {images.map((_, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => setCurrentImage(index)}
-                  whileHover={{ scale: 1.2 }}
-                  className={`w-2 h-2 rounded-full ${currentImage === index ? 'bg-white' : 'bg-white bg-opacity-50'}`}
-                  aria-label={`Go to image ${index + 1}`}
-                />
-              ))}
-            </div>
-          </>
+            </button>
+          </div>
+        )}
+        
+        {/* Image Indicators */}
+        {totalImages > 1 && (
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-1.5 z-20">
+            {images.map((_, index) => (
+              <div
+                key={index}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  currentImage === index ? 'w-6 bg-indigo-500' : 'w-1.5 bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
         )}
       </div>
       
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-3 text-gray-800">{title}</h3>
-        <p className="text-gray-600 mb-4">{description}</p>
-        <div className="mb-2">
-          <h4 className="text-sm font-semibold text-gray-700 mb-2">Technologies Used:</h4>
+      <div className="p-8 flex flex-col flex-grow">
+        <h3 className="text-2xl font-bold mb-3 text-slate-800">{title}</h3>
+        <p className="text-slate-600 mb-6 text-sm leading-relaxed flex-grow">{description}</p>
+        
+        <div className="space-y-4">
           <div className="flex flex-wrap gap-2">
             {technologies.map((tech, index) => (
-              <motion.span 
+              <span 
                 key={index} 
-                whileHover={{ scale: 1.05 }}
-                className="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm"
+                className="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-md text-xs font-semibold tracking-wide"
               >
                 {tech}
-              </motion.span>
+              </span>
             ))}
           </div>
-        </div>
-        <div className="mt-4 flex justify-end">
-          <motion.a href={link} target="_blank">
-          <motion.button 
-            whileHover={{ x: 3 }}
-            className="text-indigo-600 hover:text-indigo-800 flex items-center"
-          >
-            View Project <ExternalLink size={16} className="ml-1"/>
-          </motion.button>
-          </motion.a>
+          
+          {link && (
+            <div className="pt-4 border-t border-slate-100 mt-auto">
+              <a 
+                href={link} 
+                target="_blank" 
+                rel="noreferrer"
+                className="inline-flex items-center text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors group/link"
+              >
+                View Repository 
+                <ExternalLink size={16} className="ml-1.5 transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform"/>
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>
   );
 }
 
-// Component for Achievement Cards
+// Enhanced Achievement Card (Horizontal Layout)
 function AchievementCard({ title, date, description, imageUrl }) {
   return (
     <motion.div 
       variants={fadeIn}
-      whileHover={{ y: -5 }}
-      className="bg-white rounded-lg overflow-hidden shadow-md mb-8 hover:shadow-lg transition-shadow"
+      className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row group"
     >
-      <div className="relative">
-        <img src={imageUrl} alt={title} className="w-full h-64 object-cover" />
-        <div className="absolute top-4 right-4 bg-indigo-600 text-white px-4 py-2 rounded-full">
+      <div className="sm:w-1/3 relative overflow-hidden bg-slate-100">
+        <img 
+          src={imageUrl} 
+          alt={title} 
+          className="w-full h-48 sm:h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+        />
+      </div>
+      <div className="sm:w-2/3 p-6 sm:p-8 flex flex-col justify-center relative">
+        <div className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-full w-max mb-4">
           {date}
         </div>
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-3 text-gray-800">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+        <h3 className="text-xl font-bold mb-3 text-slate-800 leading-snug">{title}</h3>
+        <p className="text-slate-600 text-sm leading-relaxed">{description}</p>
       </div>
     </motion.div>
   );
 }
 
-// Custom Icons
+// Custom Icons with slightly adjusted colors
 function WebIcon() {
   return (
-    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div className="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
       </svg>
     </div>
@@ -809,8 +851,8 @@ function WebIcon() {
 
 function AppIcon() {
   return (
-    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div className="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
       </svg>
     </div>
@@ -819,8 +861,8 @@ function AppIcon() {
 
 function VrIcon() {
   return (
-    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div className="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
       </svg>
     </div>
@@ -829,19 +871,18 @@ function VrIcon() {
 
 function IoTIcon() {
   return (
-    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div className="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
       </svg>
     </div>
   );
 }
 
-
 function AiIcon() {
   return (
-    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div className="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <rect x="6" y="6" width="12" height="10" rx="2" strokeWidth={2} />
         <circle cx="9" cy="9" r="1" fill="currentColor" />
         <circle cx="15" cy="9" r="1" fill="currentColor" />
