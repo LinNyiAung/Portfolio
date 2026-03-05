@@ -418,15 +418,6 @@ export default function PortfolioWebsite() {
             className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10"
           >
             <ProjectCard 
-              title="Salesman - Pahtama Group"
-              description="A salesman management system that helps sales teams navigate routes, view shop details, and analyze sales data with location-based features. The app uses route-based authentication and provides comprehensive analytics for better sales performance tracking."
-              technologies={['Flutter', 'Python', 'Uvicorn', 'FastAPI', 'SQLite']}
-              images={[
-                phms1, phms2, phms3, phms4, phms5, phms6, phms7, phms8,
-              ]}
-              link="#"
-            />
-            <ProjectCard 
               title="Myanmar Earthquake Map"
               description="A map for reporting damages during 2025 earthquake in Myanmar. The aim is to connect damaged areas and people with volunteers and aid suppliers."
               technologies={['React', 'Node.js', 'Express.js', 'MongoDB']}
