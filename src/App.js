@@ -118,7 +118,7 @@ function useScrollAnimation() {
           }
         });
       },
-      { threshold: 0.15 } // Slightly higher threshold for better trigger timing
+      { threshold: 0.15 }
     );
     
     const sections = document.querySelectorAll('.scroll-animate');
@@ -144,7 +144,8 @@ export default function PortfolioWebsite() {
   const animatedElements = useScrollAnimation();
 
   const handleScroll = () => {
-    const sections = ['home', 'about', 'skills', 'projects', 'achievements', 'contact'];
+    // Added 'experience' to the scroll tracker
+    const sections = ['home', 'about', 'experience', 'skills', 'projects', 'achievements', 'contact'];
     const scrollPosition = window.scrollY + 100;
     
     setScrolled(window.scrollY > 20);
@@ -181,9 +182,12 @@ export default function PortfolioWebsite() {
     setIsMobileMenuOpen(false);
   };
 
+  // Nav Items array with Experience added
+  const navItems = ['Home', 'About', 'Experience', 'Skills', 'Projects', 'Achievements', 'Contact'];
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
-      {/* Navigation - Enhanced with Glassmorphism */}
+      {/* Navigation */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -198,8 +202,8 @@ export default function PortfolioWebsite() {
           </div>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
-            {['Home', 'About', 'Skills', 'Projects', 'Achievements', 'Contact'].map((item) => (
+          <div className="hidden md:flex space-x-6 lg:space-x-8">
+            {navItems.map((item) => (
               <motion.button 
                 key={item}
                 whileHover={{ y: -2 }}
@@ -233,7 +237,7 @@ export default function PortfolioWebsite() {
               className="md:hidden bg-white/95 backdrop-blur-xl shadow-xl absolute w-full left-0 top-full overflow-hidden"
             >
               <div className="flex flex-col px-6 py-6 space-y-5">
-                {['Home', 'About', 'Skills', 'Projects', 'Achievements', 'Contact'].map((item) => (
+                {navItems.map((item) => (
                   <button 
                     key={item}
                     onClick={() => scrollToSection(item.toLowerCase())}
@@ -250,9 +254,8 @@ export default function PortfolioWebsite() {
         </AnimatePresence>
       </motion.nav>
 
-      {/* Hero Section - Upgraded Gradient and Spacing */}
+      {/* Hero Section */}
       <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-900 text-white">
-        {/* Decorative background elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-20">
           <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
           <div className="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
@@ -318,7 +321,7 @@ export default function PortfolioWebsite() {
         </motion.div>
       </section>
 
-      {/* About Section - Modernized Shape and Typography */}
+      {/* About Section */}
       <section id="about" className="py-24 bg-white scroll-animate">
         <div className="container mx-auto px-6 max-w-6xl">
           <motion.div 
@@ -382,8 +385,101 @@ export default function PortfolioWebsite() {
         </div>
       </section>
 
-      {/* Skills Section - Polished Cards */}
-      <section id="skills" className="py-24 bg-slate-50 scroll-animate">
+      {/* Experience Section - NEW */}
+      <section id="experience" className="py-24 bg-slate-50 scroll-animate">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <motion.div 
+            variants={fadeIn}
+            initial="hidden"
+            animate={animatedElements.experience ? "visible" : "hidden"}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Work Experience</h2>
+            <div className="w-20 h-1.5 bg-indigo-500 mx-auto rounded-full"></div>
+          </motion.div>
+
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            animate={animatedElements.experience ? "visible" : "hidden"}
+            className="relative border-l-2 border-indigo-100 ml-3 md:ml-6"
+          >
+            {/* Pahtama Group Experience Timeline Node */}
+            <motion.div variants={fadeIn} className="relative pl-6 md:pl-10">
+              {/* Main Timeline Dot */}
+              <div className="absolute left-[-9px] top-2 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-slate-50"></div>
+              
+              <div className="bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 group">
+                <div className="mb-8 pb-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <h3 className="text-2xl font-extrabold text-slate-800 group-hover:text-indigo-600 transition-colors">
+                      Pahtama Group <span className="text-slate-500 font-medium text-lg ml-1 block sm:inline">(City Holdings)</span>
+                    </h3>
+                  </div>
+                  <div className="mt-2 md:mt-0 px-4 py-1.5 bg-indigo-50 text-indigo-700 font-bold rounded-full text-sm w-max tracking-wide">
+                    June 2025 - Current
+                  </div>
+                </div>
+                
+                <div className="space-y-10">
+                  {/* Supervisor Role */}
+                  <div className="relative">
+                    <div className="absolute left-[-2rem] md:left-[-3.5rem] top-2 w-2 h-2 rounded-full bg-indigo-400 hidden md:block ring-4 ring-white"></div>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                      <h4 className="text-xl font-bold text-slate-800">IT Supervisor</h4>
+                      <span className="text-xs font-bold text-slate-500 tracking-wider mt-1 md:mt-0">SEP 2025 - CURRENT</span>
+                    </div>
+                    <ul className="space-y-3 text-slate-600 text-sm md:text-base leading-relaxed">
+                      <li className="flex items-start">
+                        <span className="text-indigo-400 mr-3 mt-1 text-lg leading-none">▹</span> 
+                        <span>Lead full-stack development of internal apps, websites, and digital systems aligned with organizational goals.</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-indigo-400 mr-3 mt-1 text-lg leading-none">▹</span> 
+                        <span>Translate business requirements into efficient, maintainable technical solutions.</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-indigo-400 mr-3 mt-1 text-lg leading-none">▹</span> 
+                        <span>Architect and deploy AI-enhanced modules for workflow automation and analytics using OpenAI API.</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-indigo-400 mr-3 mt-1 text-lg leading-none">▹</span> 
+                        <span>Ensure usability, efficiency, and scalability across platforms.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Intern Role */}
+                  <div className="relative pt-2">
+                    <div className="absolute left-[-2rem] md:left-[-3.5rem] top-4 w-2 h-2 rounded-full bg-slate-300 hidden md:block ring-4 ring-white"></div>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                      <h4 className="text-xl font-bold text-slate-800">IT Intern</h4>
+                      <span className="text-xs font-bold text-slate-500 tracking-wider mt-1 md:mt-0">JUN 2025 - AUG 2025</span>
+                    </div>
+                    <ul className="space-y-3 text-slate-600 text-sm md:text-base leading-relaxed">
+                      <li className="flex items-start">
+                        <span className="text-slate-400 mr-3 mt-1 text-lg leading-none">▹</span> 
+                        <span>Collaborate with team members and contribute to ongoing IT initiatives.</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-slate-400 mr-3 mt-1 text-lg leading-none">▹</span> 
+                        <span>Translate business requirements into technical solutions.</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-slate-400 mr-3 mt-1 text-lg leading-none">▹</span> 
+                        <span>Learn and apply best practices in software development and IT operations.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Skills Section - Updated to bg-white to alternate background */}
+      <section id="skills" className="py-24 bg-white scroll-animate">
         <div className="container mx-auto px-6 max-w-7xl">
           <motion.div 
             variants={fadeIn}
@@ -405,33 +501,38 @@ export default function PortfolioWebsite() {
               title="Web Dev" 
               description="Creating responsive and dynamic websites using modern frameworks and best practices."
               icon={<WebIcon />}
+              bgClass="bg-slate-50"
             />
             <SkillCard 
               title="App Dev" 
               description="Building cross-platform mobile and desktop applications with seamless UX."
               icon={<AppIcon />}
+              bgClass="bg-slate-50"
             />
             <SkillCard 
               title="AR/VR Dev" 
               description="Developing immersive augmented and virtual reality experiences."
               icon={<VrIcon />}
+              bgClass="bg-slate-50"
             />
             <SkillCard
               title="AI & ML"
               description="Developing intelligent systems and leveraging models for data analysis."
               icon={<AiIcon />}
+              bgClass="bg-slate-50"
             />
             <SkillCard 
               title="IoT" 
               description="Connecting devices and creating smart solutions for the IoT ecosystem."
               icon={<IoTIcon />}
+              bgClass="bg-slate-50"
             />
           </motion.div>
         </div>
       </section>
 
-      {/* Projects Section - Aspect Ratio & Overlay fixes */}
-      <section id="projects" className="py-24 bg-white scroll-animate">
+      {/* Projects Section - Updated to bg-slate-50 to alternate background */}
+      <section id="projects" className="py-24 bg-slate-50 scroll-animate">
         <div className="container mx-auto px-6 max-w-7xl">
           <motion.div 
             variants={fadeIn}
@@ -449,7 +550,6 @@ export default function PortfolioWebsite() {
             animate={animatedElements.projects ? "visible" : "hidden"}
             className="grid grid-cols-1 lg:grid-cols-2 gap-10"
           >
-            {/* Same content, just fed into the upgraded ProjectCard */}
             <ProjectCard 
               title="Myanmar Earthquake Map"
               description="A map for reporting damages during the 2025 earthquake in Myanmar. Connects damaged areas with volunteers and aid suppliers."
@@ -488,8 +588,8 @@ export default function PortfolioWebsite() {
         </div>
       </section>
 
-      {/* Achievements Section - Sleek Layout */}
-      <section id="achievements" className="py-24 bg-slate-50 scroll-animate">
+      {/* Achievements Section - Updated to bg-white to alternate background */}
+      <section id="achievements" className="py-24 bg-white scroll-animate">
         <div className="container mx-auto px-6 max-w-4xl">
           <motion.div 
             variants={fadeIn}
@@ -512,36 +612,41 @@ export default function PortfolioWebsite() {
               date="August 2025"
               description="Awarded Bronze at the Asian Science Camp 2025 Poster Presentation under the Sustainability theme for 'EcoBoat'—an AI-powered, solar-driven marine pollution solution."
               imageUrl={asc}
+              bgClass="bg-slate-50"
             />
             <AchievementCard 
               title="First Runner-up - GUSTO Innovation Awards"
               date="March 2025"
               description="Won second prize for developing an AI-powered Financial Management Application, praised for its innovative approach."
               imageUrl={inno2025}
+              bgClass="bg-slate-50"
             />
             <AchievementCard 
               title="Finalist - Falling Walls Lab Myanmar 2024"
               date="September 2024"
               description="Participated as a Finalist with a platform solving local investment issues."
               imageUrl={fwl}
+              bgClass="bg-slate-50"
             />
             <AchievementCard 
               title="Samsung Ai Hackathon"
               date="September 2024"
               description="Participated in Samsung's Innovation Bootcamp and AI Hackathon with a sign language interpreter app."
               imageUrl={samsung}
+              bgClass="bg-slate-50"
             />
             <AchievementCard 
               title="Second Runner-up - GUSTO Innovation Awards"
               date="December 2023"
               description="Won third prize for developing an Augmented Reality-based educational application."
               imageUrl={inno2024}
+              bgClass="bg-slate-50"
             />           
           </motion.div>
         </div>
       </section>
 
-      {/* Contact Section - Modern Forms */}
+      {/* Contact Section */}
       <section id="contact" className="py-24 bg-slate-900 text-white scroll-animate relative overflow-hidden">
         {/* Subtle background element */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-screen filter blur-3xl opacity-20"></div>
@@ -675,13 +780,12 @@ function SocialButton({ href, icon, label, primary }) {
 }
 
 // Enhanced Skill Card
-function SkillCard({ title, description, icon }) {
+function SkillCard({ title, description, icon, bgClass = "bg-white" }) {
   return (
     <motion.div 
       variants={fadeIn}
-      className="group bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all duration-300 relative overflow-hidden"
+      className={`group ${bgClass} p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:border-indigo-100 transition-all duration-300 relative overflow-hidden`}
     >
-      {/* Decorative gradient blob that appears on hover */}
       <div className="absolute -right-10 -top-10 w-32 h-32 bg-indigo-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
       
       <div className="relative z-10">
@@ -727,7 +831,7 @@ function ProjectCard({ title, description, technologies, images, link }) {
         
         {totalImages > 0 && (
           <motion.img 
-            key={currentImage} // forces re-render for animation
+            key={currentImage} 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
@@ -738,7 +842,6 @@ function ProjectCard({ title, description, technologies, images, link }) {
           />
         )}
         
-        {/* Sleek Carousel Controls */}
         {totalImages > 1 && (
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between px-3">
             <button 
@@ -756,7 +859,6 @@ function ProjectCard({ title, description, technologies, images, link }) {
           </div>
         )}
         
-        {/* Image Indicators */}
         {totalImages > 1 && (
           <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-1.5 z-20">
             {images.map((_, index) => (
@@ -806,12 +908,12 @@ function ProjectCard({ title, description, technologies, images, link }) {
   );
 }
 
-// Enhanced Achievement Card (Horizontal Layout)
-function AchievementCard({ title, date, description, imageUrl }) {
+// Enhanced Achievement Card
+function AchievementCard({ title, date, description, imageUrl, bgClass = "bg-white" }) {
   return (
     <motion.div 
       variants={fadeIn}
-      className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row group"
+      className={`${bgClass} rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row group`}
     >
       <div className="sm:w-1/3 relative overflow-hidden bg-slate-100">
         <img 
@@ -831,7 +933,7 @@ function AchievementCard({ title, date, description, imageUrl }) {
   );
 }
 
-// Custom Icons with slightly adjusted colors
+// Custom Icons
 function WebIcon() {
   return (
     <div className="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center">
