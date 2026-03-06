@@ -144,7 +144,6 @@ export default function PortfolioWebsite() {
   const animatedElements = useScrollAnimation();
 
   const handleScroll = () => {
-    // Added 'experience' to the scroll tracker
     const sections = ['home', 'about', 'experience', 'skills', 'projects', 'achievements', 'contact'];
     const scrollPosition = window.scrollY + 100;
     
@@ -171,18 +170,25 @@ export default function PortfolioWebsite() {
     };
   }, []);
 
+  // UPDATED SCROLL LOGIC
   const scrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      window.scrollTo({
-        top: section.offsetTop - 70,
-        behavior: 'smooth'
-      });
-    }
-    setIsMobileMenuOpen(false);
+    setIsMobileMenuOpen(false); // Close menu instantly
+    
+    setTimeout(() => {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        // Use getBoundingClientRect for bulletproof offset calculation
+        const yOffset = -70; // Accounts for the fixed navbar height
+        const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
+        
+        window.scrollTo({
+          top: y,
+          behavior: 'smooth'
+        });
+      }
+    }, 150); // Small delay allows the React state update and layout to stabilize
   };
 
-  // Nav Items array with Experience added
   const navItems = ['Home', 'About', 'Experience', 'Skills', 'Projects', 'Achievements', 'Contact'];
 
   return (
@@ -385,7 +391,7 @@ export default function PortfolioWebsite() {
         </div>
       </section>
 
-      {/* Experience Section - NEW */}
+      {/* Experience Section */}
       <section id="experience" className="py-24 bg-slate-50 scroll-animate">
         <div className="container mx-auto px-6 max-w-4xl">
           <motion.div 
@@ -478,7 +484,7 @@ export default function PortfolioWebsite() {
         </div>
       </section>
 
-      {/* Skills Section - Updated to bg-white to alternate background */}
+      {/* Skills Section */}
       <section id="skills" className="py-24 bg-white scroll-animate">
         <div className="container mx-auto px-6 max-w-7xl">
           <motion.div 
@@ -531,7 +537,7 @@ export default function PortfolioWebsite() {
         </div>
       </section>
 
-      {/* Projects Section - Updated to bg-slate-50 to alternate background */}
+      {/* Projects Section */}
       <section id="projects" className="py-24 bg-slate-50 scroll-animate">
         <div className="container mx-auto px-6 max-w-7xl">
           <motion.div 
@@ -588,7 +594,7 @@ export default function PortfolioWebsite() {
         </div>
       </section>
 
-      {/* Achievements Section - Updated to bg-white to alternate background */}
+      {/* Achievements Section */}
       <section id="achievements" className="py-24 bg-white scroll-animate">
         <div className="container mx-auto px-6 max-w-4xl">
           <motion.div 
