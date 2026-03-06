@@ -451,13 +451,6 @@ export default function PortfolioWebsite() {
           >
             {/* Same content, just fed into the upgraded ProjectCard */}
             <ProjectCard 
-              title="Salesman - Pahtama Group"
-              description="A salesman management system that helps teams navigate routes, view shop details, and analyze data. Features route-based authentication and comprehensive analytics."
-              technologies={['Flutter', 'Python', 'FastAPI', 'SQLite']}
-              images={[phms1, phms2, phms3, phms4, phms5, phms6, phms7, phms8]}
-              link="#"
-            />
-            <ProjectCard 
               title="Myanmar Earthquake Map"
               description="A map for reporting damages during the 2025 earthquake in Myanmar. Connects damaged areas with volunteers and aid suppliers."
               technologies={['React', 'Node.js', 'Express', 'MongoDB']}
