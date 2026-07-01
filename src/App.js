@@ -70,7 +70,25 @@ import tpm10 from './img/thonephatmyin/tpm10.jpg';
 import tpm11 from './img/thonephatmyin/tpm11.png';
 import tpm12 from './img/thonephatmyin/tpm12.png';
 
-import LinNyiAung from './files/LinNyiAung.pdf';
+
+import f1 from './img/flow/f1.jpg'
+import f2 from './img/flow/f2.jpg'
+import f3 from './img/flow/f3.jpg'
+import f4 from './img/flow/f4.jpg'
+import f5 from './img/flow/f5.jpg'
+import f6 from './img/flow/f6.jpg'
+import f7 from './img/flow/f7.jpg'
+import f8 from './img/flow/f8.jpg'
+import f9 from './img/flow/f9.jpg'
+import f10 from './img/flow/f10.jpg'
+import f11 from './img/flow/f11.jpg'
+import f12 from './img/flow/f12.jpg'
+import f13 from './img/flow/f13.jpg'
+import f14 from './img/flow/f14.jpg'
+import f15 from './img/flow/f15.jpg'
+import f16 from './img/flow/f16.jpg'
+
+import LinNyiAung from './files/Regularcv.pdf';
 // --- End of Imports ---
 
 // Refined Animation variants
@@ -556,6 +574,13 @@ export default function PortfolioWebsite() {
             animate={animatedElements.projects ? "visible" : "hidden"}
             className="grid grid-cols-1 lg:grid-cols-2 gap-10"
           >
+            <ProjectCard 
+              title="Toe Pwar (Rebranded)"
+              description="A rebranded version of Toe Pwar mobile app, leveraging generative ai and LLMs for personal finanace."
+              technologies={['React', 'Python', 'Express', 'MongoDB', 'RAG', 'Generative Ai']}
+              images={[f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16]}
+              link="https://github.com/LinNyiAung/Flow"
+            />
             <ProjectCard 
               title="Myanmar Earthquake Map"
               description="A map for reporting damages during the 2025 earthquake in Myanmar. Connects damaged areas with volunteers and aid suppliers."
