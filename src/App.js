@@ -88,7 +88,7 @@ import f14 from './img/flow/f14.jpg'
 import f15 from './img/flow/f15.jpg'
 import f16 from './img/flow/f16.jpg'
 
-import LinNyiAung from './files/Regularcv.pdf';
+import LinNyiAung from './files/Lin_Nyi_Aung_WorkCV.pdf';
 // --- End of Imports ---
 
 // Refined Animation variants
